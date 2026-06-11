@@ -3,13 +3,13 @@
 
 // ── Constants ───────────────────────────────────────────────────────────────
 const TOTAL_LAPS = 3;
-const ROAD_WIDTH = 7;
+const ROAD_WIDTH = 10;
 const ROAD_SEGS = 300;
 const CAR_ACCEL = 28;
 const CAR_BRAKE = 40;
 const CAR_DRAG = 0.97;
-const CAR_STEER_MAX = 0.9;      // was 1.6
-const CAR_STEER_SPEED = 1.1;    // was 3.5
+const CAR_STEER_MAX = 0.45;      // was 1.6
+const CAR_STEER_SPEED = 0.6;    // was 3.5
 const HANDBRAKE_DRAG = 0.88;
 const MAX_SPEED = 60;
 const GRAVITY = 20;
