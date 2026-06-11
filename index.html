@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RaceTrack</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a1a; overflow: hidden; font-family: 'Segoe UI', monospace; }
+  #canvas { display: block; width: 100vw; height: 100vh; }
+  #hud {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 16px 24px; pointer-events: none; z-index: 10;
+  }
+  .hud-box {
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 10px 18px; color: #fff;
+    backdrop-filter: blur(6px);
+  }
+  .hud-label { font-size: 10px; letter-spacing: 2px; color: #aaa; text-transform: uppercase; }
+  .hud-value { font-size: 28px; font-weight: 700; color: #fff; line-height: 1.1; }
+  .hud-value.green { color: #4eff91; }
+  .hud-value.yellow { color: #ffe04e; }
+  #lap-times { display: flex; flex-direction: column; gap: 4px; min-width: 130px; }
+  .lap-row { font-size: 13px; color: #ccc; display: flex; justify-content: space-between; gap: 12px; }
+  .lap-row .best { color: #4eff91; }
+  #mini-map {
+    position: fixed; bottom: 20px; right: 20px; z-index: 10;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 8px;
+  }
+  #controls-hint {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    color: rgba(255,255,255,0.4); font-size: 12px; letter-spacing: 1px;
+    pointer-events: none; z-index: 10;
+  }
+  #overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.82);
+  }
+  #overlay h1 { font-size: 56px; font-weight: 900; color: #4eff91; letter-spacing: 4px; margin-bottom: 8px; }
+  #overlay p { color: #aaa; font-size: 16px; margin-bottom: 32px; letter-spacing: 1px; }
+  #overlay button {
+    background: #4eff91; color: #000; border: none; padding: 14px 48px;
+    font-size: 18px; font-weight: 700; border-radius: 8px; cursor: pointer;
+    letter-spacing: 2px; transition: transform 0.1s, box-shadow 0.1s;
+  }
+  #overlay button:hover { transform: scale(1.05); box-shadow: 0 0 24px #4eff91aa; }
+  #finish-msg { display: none; flex-direction: column; align-items: center; gap: 12px; }
+  #finish-msg h2 { font-size: 42px; color: #ffe04e; }
+  #finish-msg .times { color: #ccc; font-size: 15px; text-align: center; line-height: 1.8; }
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div id="hud">
+  <div class="hud-box" id="lap-times">
+    <div class="hud-label">Lap Times</div>
+    <div id="lap-list"></div>
+  </div>
+  <div class="hud-box" style="text-align:center">
+    <div class="hud-label">Current Lap</div>
+    <div class="hud-value" id="cur-time">0:00.000</div>
+  </div>
+  <div style="display:flex;gap:12px">
+    <div class="hud-box" style="text-align:center">
+      <div class="hud-label">Lap</div>
+      <div class="hud-value yellow" id="lap-num">1 / 3</div>
+    </div>
+    <div class="hud-box" style="text-align:center">
+      <div class="hud-label">Speed</div>
+      <div class="hud-value green" id="speed-val">0</div>
+      <div class="hud-label">km/h</div>
+    </div>
+    <div class="hud-box" style="text-align:center">
+      <div class="hud-label">Camera</div>
+      <div class="hud-value" id="cam-mode" style="font-size:14px;letter-spacing:1px;padding-top:4px">CHASE</div>
+    </div>
+  </div>
+</div>
+
+<canvas id="mini-map" width="120" height="120"></canvas>
+<div id="controls-hint">W/S — Accelerate/Brake &nbsp;|&nbsp; A/D — Steer &nbsp;|&nbsp; SPACE — Handbrake &nbsp;|&nbsp; R — Reset &nbsp;|&nbsp; C — Camera</div>
+
+<div id="overlay">
+  <div id="start-screen">
+    <h1>RACETRACK</h1>
+    <p>Low-poly racing · 3 laps · Beat your best time</p>
+    <button id="start-btn">START RACE</button>
+  </div>
+  <div id="finish-msg">
+    <h2>RACE COMPLETE</h2>
+    <div class="times" id="finish-times"></div>
+    <button id="restart-btn" style="margin-top:16px">RACE AGAIN</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
